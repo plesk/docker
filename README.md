@@ -6,13 +6,13 @@ Dockerfiles for building Plesk images.
 
 Here is an example on how to build the image manually:
 
-    cd 12.0 ; docker build -t plesk:12.0 .
+    cd 12.5 ; docker build -t plesk/plesk:12.5 .
 
 Create a container to test the image:
 
-    docker run -d -P -it plesk:12.0
+    docker run -d -it -p 8880:8880 plesk/plesk:12.5
 
-Open the URL with port which was mapped to 8880 port inside container.
+Open IP:8880 URL using browser.
 
 Default login and password: admin / changeme 
 
