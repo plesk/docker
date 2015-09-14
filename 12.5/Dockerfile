@@ -51,5 +51,5 @@ CMD /run.sh
 # 443 - https
 # 3306 - mysql
 # 8880 - plesk via http
-# 8880 - plesk via https
-EXPOSE 21 80 8880
+# 8443 - plesk via https
+EXPOSE 21 80 443 8880 8443
