@@ -18,6 +18,20 @@ Default login and password: admin / changeme
 
 # Known Issues
 
+#### Error during building of the image on Ubuntu
+
+Symptoms:
+
+    ===> Cumulative APS controller upgrade (final stage) has been started.
+    Killed
+
+Or:
+
+    DEBUGGER DETECTED... Bye!
+    Killed
+
+Disable AppArmor and try to build the image again.
+
 #### Error after initial configuration
 
     Unable to configure control panel: reconfig failed: Error while rename file /etc/hosts.tmp:
