@@ -30,7 +30,7 @@ Or:
     DEBUGGER DETECTED... Bye!
     Killed
 
-Disable AppArmor and try to build the image again.
+Disable AppArmor (or remove it) and try to build the image again.
 
 #### Error after initial configuration
 
