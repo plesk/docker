@@ -1,4 +1,4 @@
-# Plesk next version preview container
+# Plesk 12.5 container
 
 FROM ubuntu:14.04
 
