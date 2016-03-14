@@ -2,7 +2,7 @@
 
 FROM ubuntu:14.04
 
-MAINTAINER plesk-dev-leads@odin.com
+MAINTAINER plesk-dev-leads@plesk.com
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
