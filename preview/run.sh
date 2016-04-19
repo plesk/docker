@@ -1,6 +1,7 @@
 #!/bin/bash
 
-/etc/init.d/psa startall
+for SERVICE in sw-engine sw-cp-server nginx mysql apache2; do
+    service $SERVICE start
+done
 plesk bin ipmanage --reread
-/etc/init.d/nginx start
 exec plesk log --all
