@@ -2,6 +2,20 @@
 
 Dockerfiles for building Plesk images.
 
+# Ready to Use Images
+
+Ready to use images are published at [Docker Hub](https://hub.docker.com/r/plesk/plesk/).
+
+Create a container based on published image:
+
+    docker run -d -it -p 8880:8880 plesk/plesk:preview
+
+Use Docker host IP address and 8880 port for URL to open it in the browser. The following command can be used in the terminal:
+
+    open http://`docker-machine ip`:8880
+    
+Default login and password: admin / changeme 
+
 # How To Build And Test
 
 Here is an example on how to build the image manually:
@@ -11,10 +25,6 @@ Here is an example on how to build the image manually:
 Create a container to test the image:
 
     docker run --privileged -d -it -p 8880:8880 plesk/plesk:12.5
-
-Open IP:8880 URL using browser.
-
-Default login and password: admin / changeme 
 
 # Known Issues
 
