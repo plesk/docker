@@ -16,7 +16,7 @@ RUN apt-get update \
     && bash /root/ai \
         --all-versions \
         --select-product-id=plesk \
-        --select-release-id=PLESK_17_0_6 \
+        --select-release-id=PLESK_17_0_11 \
         --install-component panel \
         --install-component phpgroup \
         --install-component web-hosting \
@@ -28,11 +28,12 @@ RUN apt-get update \
         --install-component php5.6 \
         --install-component l10n \
         --install-component heavy-metal-skin \
+        --install-component git \
     && plesk bin init_conf --init \
         -email changeme@example.com \
         -passwd changeme \
         -hostname-not-required \
-    && plesk bin license -i A00000-K6QK03-KSG046-H6BK67-1GE201 \
+    && plesk bin license -i A00400-QH8V03-HMB657-N6GM38-NGV217 \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
