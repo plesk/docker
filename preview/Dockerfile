@@ -36,6 +36,7 @@ RUN apt-get update \
     && plesk bin license -i A00400-QH8V03-HMB657-N6GM38-NGV217 \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
+    && plesk bin subscription -c example.dom -ip `hostname --ip-address` -hosting true -login exampledom -passwd changeme \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
     && apt-get clean \
