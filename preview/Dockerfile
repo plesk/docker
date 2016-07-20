@@ -16,7 +16,7 @@ RUN apt-get update \
     && bash /root/ai \
         --all-versions \
         --select-product-id=plesk \
-        --select-release-id=PLESK_17_0_12 \
+        --select-release-id=PLESK_17_0_14 \
         --install-component panel \
         --install-component phpgroup \
         --install-component web-hosting \
@@ -29,11 +29,12 @@ RUN apt-get update \
         --install-component l10n \
         --install-component heavy-metal-skin \
         --install-component git \
+        --install-component ruby \
     && plesk bin init_conf --init \
         -email changeme@example.com \
         -passwd changeme \
         -hostname-not-required \
-    && plesk bin license -i A00X00-YFVH03-CX5460-4B3787-EAAP22 \
+    && plesk bin license -i A00D00-8SRM03-V3SG69-8XDT04-TRQ272 \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
     && plesk bin subscription -c example.dom -ip `hostname --ip-address` -hosting true -login exampledom -passwd changeme \
