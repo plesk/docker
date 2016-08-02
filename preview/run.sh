@@ -1,7 +1,8 @@
 #!/bin/bash
 
-for SERVICE in sw-engine sw-cp-server nginx mysql apache2; do
-    service $SERVICE start
-done
-plesk bin ipmanage --reread
+export PATH=/usr/lib/plesk-9.0:/usr/lib64/plesk-9.0:$PATH
+service mysql start
+psa_service execute_actions
+psa_service startall
+plesk sbin pleskrc nginx start
 exec plesk log --all
