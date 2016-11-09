@@ -38,7 +38,7 @@ RUN apt-get update \
         -email changeme@example.com \
         -passwd changeme \
         -hostname-not-required \
-    && plesk bin license -i A00D00-PSGA03-107D76-SRP047-6MD041 \
+    && plesk bin license -i A00H00-QRYY03-JJ1P81-5GD440-3A0J43 \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
