@@ -60,4 +60,5 @@ CMD /run.sh
 # 3306 - mysql
 # 8880 - plesk via http
 # 8443 - plesk via https
-EXPOSE 21 80 443 8880 8443
+# 8447 - autoinstaller
+EXPOSE 21 80 443 8880 8443 8447
