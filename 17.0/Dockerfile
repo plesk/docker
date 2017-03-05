@@ -43,6 +43,7 @@ RUN apt-get update \
     && plesk bin poweruser --off \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
+    && echo DOCKER > /usr/local/psa/var/cloud_id \
     && apt-get clean \
     && rm -rf /root/ai /root/parallels
 
