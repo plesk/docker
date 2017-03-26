@@ -5,4 +5,5 @@ service mysql start
 psa_service execute_actions
 psa_service startall
 plesk sbin pleskrc nginx start
+cron
 exec plesk log --all
