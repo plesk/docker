@@ -7,6 +7,8 @@ MAINTAINER plesk-dev-leads@plesk.com
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 
+ARG LICENSE
+
 # allow services to start
 RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
 
@@ -38,7 +40,7 @@ RUN apt-get update \
         -email changeme@example.com \
         -passwd changeme \
         -hostname-not-required \
-    && plesk bin license -i A00D00-PSGA03-107D76-SRP047-6MD041 \
+    && plesk bin license -i $LICENSE \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
     && plesk bin subscription -c example.dom -ip `hostname --ip-address` -hosting true -login exampledom -passwd changeme \

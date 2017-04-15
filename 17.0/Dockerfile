@@ -4,6 +4,8 @@ FROM ubuntu:14.04
 
 MAINTAINER plesk-dev-leads@plesk.com
 
+ARG LICENSE
+
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 
@@ -38,7 +40,7 @@ RUN apt-get update \
         -email changeme@example.com \
         -passwd changeme \
         -hostname-not-required \
-    && plesk bin license -i A00C00-X9C404-Y6F108-WX5G82-YNMH04 \
+    && plesk bin license -i $LICENSE \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
