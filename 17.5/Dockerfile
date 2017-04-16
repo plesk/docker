@@ -2,7 +2,7 @@
 
 FROM ubuntu:14.04
 
-MAINTAINER plesk-dev-leads@plesk.com
+LABEL maintainer="plesk-dev-leads@plesk.com"
 
 ARG LICENSE
 
