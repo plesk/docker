@@ -1,4 +1,4 @@
-# Plesk next version preview container
+# Plesk the latest available version container
 
 FROM ubuntu:14.04
 
@@ -18,7 +18,8 @@ RUN apt-get update \
     && bash /root/ai \
         --all-versions \
         --select-product-id=plesk \
-        --select-release-id=PLESK_17_8_1 \
+        --select-release-latest \
+        --tier testing \
         --install-component panel \
         --install-component phpgroup \
         --install-component web-hosting \
