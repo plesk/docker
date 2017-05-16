@@ -2,12 +2,12 @@
 
 FROM ubuntu:14.04
 
-MAINTAINER plesk-dev-leads@plesk.com
+LABEL maintainer="plesk-dev-leads@plesk.com"
+
+ARG LICENSE
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
-
-ARG LICENSE
 
 # allow services to start
 RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
@@ -18,7 +18,7 @@ RUN apt-get update \
     && bash /root/ai \
         --all-versions \
         --select-product-id=plesk \
-        --select-release-id=PLESK_17_0_17 \
+        --select-release-id=PLESK_17_8_1 \
         --install-component panel \
         --install-component phpgroup \
         --install-component web-hosting \
@@ -43,9 +43,9 @@ RUN apt-get update \
     && plesk bin license -i $LICENSE \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
-    && plesk bin subscription -c example.dom -ip `hostname --ip-address` -hosting true -login exampledom -passwd changeme \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
+    && echo DOCKER > /usr/local/psa/var/cloud_id \
     && apt-get clean \
     && rm -rf /root/ai /root/parallels
 
@@ -63,4 +63,5 @@ CMD /run.sh
 # 3306 - mysql
 # 8880 - plesk via http
 # 8443 - plesk via https
-EXPOSE 21 80 443 8880 8443
+# 8447 - autoinstaller
+EXPOSE 21 80 443 8880 8443 8447
