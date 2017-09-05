@@ -28,7 +28,7 @@ RUN apt-get update \
         --install-component nginx \
         --install-component mysqlgroup \
         --install-component php5.6 \
-        --install-component php7.0 \
+        --install-component php7.1 \
         --install-component l10n \
         --install-component heavy-metal-skin \
         --install-component git \
