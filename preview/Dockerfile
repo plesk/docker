@@ -46,7 +46,7 @@ RUN apt-get update \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
     && echo DOCKER > /usr/local/psa/var/cloud_id \
-    && touch /root/set_default_password \
+    && touch /root/set_admin_password \
     && apt-get clean \
     && rm -rf /root/ai /root/parallels
 
