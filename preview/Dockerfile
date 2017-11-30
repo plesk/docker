@@ -5,6 +5,7 @@ FROM ubuntu:14.04
 LABEL maintainer="plesk-dev-leads@plesk.com"
 
 ARG LICENSE
+ARG AI_HOST=autoinstall.plesk.com
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
@@ -14,7 +15,7 @@ RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
 
 RUN apt-get update \
     && apt-get install -y wget \
-    && wget -q -O /root/ai http://autoinstall.plesk.com/plesk-installer \
+    && wget -q -O /root/ai http://$AI_HOST/plesk-installer \
     && bash /root/ai \
         --all-versions \
         --select-product-id=plesk \
