@@ -18,6 +18,7 @@ RUN apt-get update \
     && wget -q -O /root/ai http://$AI_HOST/plesk-installer \
     && bash /root/ai \
         --all-versions \
+        --source http://$AI_HOST \
         --select-product-id=plesk \
         --all-versions \
         --select-release-latest \
