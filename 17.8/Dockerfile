@@ -18,8 +18,7 @@ RUN apt-get update \
     && bash /root/ai \
         --all-versions \
         --select-product-id=plesk \
-        --select-release-latest \
-        --tier testing \
+        --select-release-id=PLESK_17_8_11 \
         --install-component panel \
         --install-component phpgroup \
         --install-component web-hosting \
