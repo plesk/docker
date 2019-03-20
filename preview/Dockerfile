@@ -1,6 +1,6 @@
 # Plesk next version preview container
 
-FROM ubuntu:14.04
+FROM centos:6
 
 LABEL maintainer="plesk-dev-leads@plesk.com"
 
@@ -10,11 +10,8 @@ ARG AI_HOST=autoinstall.plesk.com
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 
-# allow services to start
-RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
-
-RUN apt-get update \
-    && apt-get install -y wget \
+RUN yum update -y \
+    && yum install -y wget \
     && wget -q -O /root/ai http://$AI_HOST/plesk-installer \
     && bash /root/ai \
         --all-versions \
@@ -51,7 +48,7 @@ RUN apt-get update \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
     && echo DOCKER > /usr/local/psa/var/cloud_id \
     && touch /root/set_admin_password \
-    && apt-get clean \
+    && yum clean all \
     && rm -rf /root/ai /root/parallels
 
 ADD run.sh /run.sh
