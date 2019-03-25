@@ -1,6 +1,6 @@
 # Plesk next version preview container
 
-FROM centos:6
+FROM ubuntu:18.04
 
 LABEL maintainer="plesk-dev-leads@plesk.com"
 
@@ -10,8 +10,16 @@ ARG AI_HOST=autoinstall.plesk.com
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 
-RUN yum update -y \
-    && yum install -y wget \
+# allow services to start
+RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
+
+ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/master/files/docker/systemctl.py /usr/bin/systemctl
+
+RUN apt-get update \
+    && apt-get install -y \
+        wget \
+        libicu60 \
+        tzdata \
     && wget -q -O /root/ai http://$AI_HOST/plesk-installer \
     && bash /root/ai \
         --all-versions \
@@ -27,8 +35,7 @@ RUN yum update -y \
         --install-component webservers \
         --install-component nginx \
         --install-component mysqlgroup \
-        --install-component php5.6 \
-        --install-component php7.1 \
+        --install-component php7.2 \
         --install-component l10n \
         --install-component heavy-metal-skin \
         --install-component git \
@@ -48,7 +55,7 @@ RUN yum update -y \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
     && echo DOCKER > /usr/local/psa/var/cloud_id \
     && touch /root/set_admin_password \
-    && yum clean all \
+    && apt-get clean \
     && rm -rf /root/ai /root/parallels
 
 ADD run.sh /run.sh

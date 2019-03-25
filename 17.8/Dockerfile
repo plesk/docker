@@ -1,6 +1,6 @@
 # Plesk the latest available version container
 
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 LABEL maintainer="plesk-dev-leads@plesk.com"
 
@@ -12,8 +12,13 @@ ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 # allow services to start
 RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
 
+ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/master/files/docker/systemctl.py /usr/bin/systemctl
+
 RUN apt-get update \
-    && apt-get install -y wget \
+    && apt-get install -y \
+        wget \
+        libicu60 \
+        tzdata \
     && wget -q -O /root/ai http://autoinstall.plesk.com/plesk-installer \
     && bash /root/ai \
         --all-versions \
