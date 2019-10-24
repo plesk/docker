@@ -25,7 +25,6 @@ RUN apt-get update \
         --all-versions \
         --source http://$AI_HOST \
         --select-product-id=plesk \
-        --all-versions \
         --select-release-latest \
         --install-component panel \
         --install-component phpgroup \
