@@ -5,6 +5,7 @@ FROM ubuntu:18.04
 LABEL maintainer="plesk-dev-leads@plesk.com"
 
 ARG LICENSE
+ARG AI_HOST=autoinstall.plesk.com
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
@@ -19,12 +20,12 @@ RUN apt-get update \
         wget \
         libicu60 \
         tzdata \
-    && wget -q -O /root/ai http://autoinstall.plesk.com/plesk-installer \
+    && wget -q -O /root/ai http://$AI_HOST/plesk-installer \
     && bash /root/ai \
         --all-versions \
+        --source http://$AI_HOST \
         --select-product-id=plesk \
         --select-release-latest \
-        --tier testing \
         --install-component panel \
         --install-component phpgroup \
         --install-component web-hosting \
@@ -33,8 +34,7 @@ RUN apt-get update \
         --install-component webservers \
         --install-component nginx \
         --install-component mysqlgroup \
-        --install-component php5.6 \
-        --install-component php7.2 \
+        --install-component php7.3 \
         --install-component l10n \
         --install-component heavy-metal-skin \
         --install-component git \
@@ -49,7 +49,7 @@ RUN apt-get update \
     && plesk bin license -i $LICENSE \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
-    && plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.0-1/default-login-1.0-1.zip \
+    && plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.1-1/default-login-1.1-1.zip \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
     && echo DOCKER > /usr/local/psa/var/cloud_id \
