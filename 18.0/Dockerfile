@@ -25,7 +25,7 @@ RUN apt-get update \
         --all-versions \
         --source http://$AI_HOST \
         --select-product-id=plesk \
-        --select-release-id=PLESK_18_0_20 \
+        --select-release-latest \
         --install-component panel \
         --install-component phpgroup \
         --install-component web-hosting \
