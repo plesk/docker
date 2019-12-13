@@ -44,12 +44,12 @@ RUN apt-get update \
         --install-component wp-toolkit \
     && plesk bin init_conf --init \
         -email changeme@example.com \
-        -passwd changeme \
+        -passwd changeme1Q** \
         -hostname-not-required \
     && plesk bin license -i $LICENSE \
     && plesk bin settings --set admin_info_not_required=true \
     && plesk bin poweruser --off \
-    && plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.1-1/default-login-1.1-1.zip \
+    && plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.2-1/default-login-1.2-1.zip \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
     && plesk bin ipmanage --auto-remap-ip-addresses true \
     && echo DOCKER > /usr/local/psa/var/cloud_id \
