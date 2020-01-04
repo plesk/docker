@@ -28,7 +28,7 @@ Automatic port mapping can be used to publish all exposed ports to random ports 
 
 Here is an example on how to build the image manually:
 
-    cd 17.0 ; docker build -t plesk/plesk:17.0 .
+    cd latest ; docker build --no-cache --build-arg "LICENSE=A00P00-70EM05-Q0D244-C69C89-X30K16" -t plesk/plesk .
 
 Create a container to test the image:
 
