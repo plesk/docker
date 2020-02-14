@@ -13,7 +13,12 @@ ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 # allow services to start
 RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
 
+# prepare fake systemctl
 ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/master/files/docker/systemctl.py /usr/bin/systemctl
+# disable annoing log entities that have no sense in ubuntu18 and setup permissions
+RUN sed -i '/^\s*logg.error("the ..include. syntax is deprecated. Use x.service.d. drop-in files!")$/d' /usr/bin/systemctl \
+    && chmod 755 /usr/bin/systemctl \
+    && ln -s /usr/bin/systemctl /bin/systemctl
 
 RUN apt-get update \
     && apt-get install -y \
@@ -51,9 +56,8 @@ RUN apt-get update \
     && plesk bin poweruser --off \
     && plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.2-1/default-login-1.2-1.zip \
     && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
-    && plesk bin ipmanage --auto-remap-ip-addresses true \
     && echo DOCKER > /usr/local/psa/var/cloud_id \
-    && touch /root/set_admin_password \
+    && touch /root/first_run \
     && apt-get clean \
     && rm -rf /root/ai /root/parallels
 
