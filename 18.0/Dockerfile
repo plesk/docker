@@ -49,7 +49,7 @@ RUN apt-get update \
         --install-component wp-toolkit \
     && plesk bin init_conf --init \
         -email changeme@example.com \
-        -passwd changeme \
+        -passwd changeme1Q** \
         -hostname-not-required \
     && plesk bin license -i $LICENSE \
     && plesk bin settings --set admin_info_not_required=true \
