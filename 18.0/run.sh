@@ -24,7 +24,7 @@ if [ -f /root/first_run ]; then
 	/opt/psa/admin/sbin/reset_instance_data start --do-what-I-say
 
 	# admin password
-	ADMIN_PASSWORD="changeme"
+	ADMIN_PASSWORD="changeme1Q**"
 	[ -n "$PSA_PASSWORD" ] && ADMIN_PASSWORD=""
 	plesk bin admin --set-password -passwd "$ADMIN_PASSWORD"
 
