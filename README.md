@@ -32,4 +32,4 @@ Here is an example on how to build the image manually:
 
 Create a container to test the image:
 
-    docker run -d -p 8880:8880 plesk/plesk:17.0
+    docker run -d -p 8880:8880 plesk/plesk
