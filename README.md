@@ -12,8 +12,8 @@ Create a container based on published image for evaluation purposes:
 
 Use Docker host IP address and 8880 port for URL to open it in the browser. The following command can be used in the terminal:
 
-    open http://`docker-machine ip`:8880
-    
+    open http://localhost:8880
+
 Default login and password: admin / changeme (for 17.8), admin / changeme1Q** (for 18.0/latest)
 
 Create a container with typical port mapping:
