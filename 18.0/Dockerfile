@@ -42,10 +42,6 @@ RUN apt-get update \
         --install-component php7.3 \
         --install-component l10n \
         --install-component heavy-metal-skin \
-        --install-component git \
-        --install-component passenger \
-        --install-component ruby \
-        --install-component nodejs \
         --install-component wp-toolkit \
     && plesk bin init_conf --init \
         -email changeme@example.com \
