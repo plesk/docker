@@ -21,7 +21,7 @@ RUN sed -i '/^\s*logg.error("the ..include. syntax is deprecated. Use x.service.
     && ln -s /usr/bin/systemctl /bin/systemctl
 
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
         wget \
         libicu60 \
         tzdata \
@@ -60,8 +60,8 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /root/ai /root/parallels
 
-ADD run.sh /run.sh
-CMD /run.sh
+COPY run.sh /run.sh
+CMD ["/run.sh"]
 
 # Port to expose
 # 21 - ftp
