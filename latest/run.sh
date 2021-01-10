@@ -45,7 +45,8 @@ if [ "x$MYSQL_HOST" != "x" ]; then
 fi
 
 # startup services required by Plesk
-for s in psa sw-engine plesk-web-socket sw-cp-server apache nginx xinetd; do
+for s in psa sw-engine plesk-web-socket sw-cp-server apache nginx xinetd bind9; do
+	[ "$s" = "bind9" -a ! -f /lib/systemd/system/bind9.service ] && continue
 	plesk sbin pleskrc "$s" start
 done
 
