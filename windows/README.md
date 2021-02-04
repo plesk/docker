@@ -1,5 +1,4 @@
-Plesk for Windows Docker Image
-======================================================
+# Plesk for Windows Docker Image
 
 * [Introduction](#introduction)
 * [Mandatory requirements](#mandatory-requirements)
@@ -10,15 +9,15 @@ Plesk for Windows Docker Image
 
 # Introduction
 
-We have been using Linux docker images for a long time. Docker image for Windows has appeared only now, so Plesk for Windows can be run in containers.
+The directory contains a Dockerfile, which helps you to build an image with Plesk for Windows product.
 
-In the long term, this should give more opportunities to improve the process of testing windows-specific functionality of Plesk.
+Plesk for Windows as a Docker container is an experimental project. Please use it only for evaluation and testing purposes at your own risk.
 
-# Mandatory requirements
+# Requirements
 
-* Building an image for Windows must be performed on a server with installed Windows Server 2019.
-* The OS version of the host system and the image version of Windows Server 2019 must be identical to run a ready image or build a new local image.
-* Otherwise, the build or the run will fail (in particular, there are problems with Microsoft Visual C ++ Redistributable installing.).
+* Building an image for Windows must be performed on a server with Windows Server 2019 installed.
+* The OS version of the host system and the image version of Windows Server 2019 must be identical to run a container or build a new local image.
+* Otherwise, the build procedure or the launch of the container may fail (in particular, there can be a problem with Microsoft Visual C++ Redistributable installation).
 
 In order to fix it, you need to make sure that the versions match:
 
@@ -26,15 +25,15 @@ In order to fix it, you need to make sure that the versions match:
 
     Microsoft Windows [Version 10.0.17763.1697]
 
-Link to check OS version, in the image: [https://hub.docker.com/\_/microsoft-windows-servercore](https://hub.docker.com/_/microsoft-windows-servercore)
+To check the version of the base OS image, use the following link: [https://hub.docker.com/\_/microsoft-windows-servercore](https://hub.docker.com/_/microsoft-windows-servercore)
 
 | Tags     | Architecture | Dockerfile    | OsVersion       | CreatedTime         | LastUpdatedTime     |
 | ---------|:------------:|:-------------:|:---------------:|:-------------------:|:-------------------:|
 | ltsc2019 | multiarch    | No Dockerfile | 10.0.17763.1697 | 10/03/2018 20:30:05 | 01/12/2021 18:03:09 |
 
-If the operating system version is outdated, you need to install all the latest updates.
+If the OS version is outdated, you need to install all the latest updates.
 
-# How To Use Ready Image
+# How To Use Plesk Image
 
 To create a container based on published image, run the command:
 
@@ -46,15 +45,9 @@ Use Docker host IP address and 8880 port for URL to open it in the browser. The 
 
 # How To Build Docker Image
 
-You can start the process of building docker image with the following command:
+You can start the process of building Docker image with the following command:
 
     docker build --no-cache --build-arg "LICENSE=A00A00-38PZ06-448D38-Y2BA16-D4GD66" -t plesk/plesk-windows .
-
-# How To Run Docker Container
-
-The container is launched with the following command:
-
-    docker run -d -p 443:443 -p 8880:8880 -p 8443:8443 -p 8447:8447 --rm --name plesk plesk/plesk-windows
 
 # How To Use Plesk Image On AWS EC2
 
