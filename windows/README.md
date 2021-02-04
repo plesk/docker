@@ -1,10 +1,9 @@
 # Plesk for Windows Docker Image
 
 * [Introduction](#introduction)
-* [Mandatory requirements](#mandatory-requirements)
-* [How To Use Ready Image](#how-to-use-ready-image)
+* [Requirements](#requirements)
+* [How To Use Plesk Image](#how-to-use-plesk-image)
 * [How To Build Docker Image](#how-to-build-docker-image)
-* [How To Run Docker Container](#how-to-run-docker-container)
 * [How To Use Plesk Image On AWS EC2](#how-to-use-plesk-image-on-aws-ec2)
 
 # Introduction
