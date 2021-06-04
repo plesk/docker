@@ -1,67 +1,93 @@
-# Plesk the latest available version container
+# Plesk container with real systemd
+# Run in background: 'docker run -d --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8443:8443 IMAGE'
+# Run in foreground: 'docker run -ti --rm --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8443:8443 IMAGE', stop with 'halt' instead of Ctrl+D
 
-FROM ubuntu:18.04
+ARG OS=ubuntu:20.04
+FROM $OS
 
 LABEL maintainer="plesk-dev-leads@plesk.com"
 
-ARG LICENSE
-ARG AI_HOST=autoinstall.plesk.com
-
-ENV DEBIAN_FRONTEND noninteractive
-ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
+ENV container docker
 
 # allow services to start
 RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
 
-# prepare fake systemctl
-ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/master/files/docker/systemctl.py /usr/bin/systemctl
-# disable annoing log entities that have no sense in ubuntu18 and setup permissions
-RUN sed -i '/^\s*logg.error("the ..include. syntax is deprecated. Use x.service.d. drop-in files!")$/d' /usr/bin/systemctl \
-    && chmod 755 /usr/bin/systemctl \
-    && ln -s /usr/bin/systemctl /bin/systemctl
-
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+RUN set -eux; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
         wget \
-        libicu60 \
         tzdata \
-    && wget -q -O /root/ai http://$AI_HOST/plesk-installer \
-    && bash /root/ai \
-        --all-versions \
-        --source http://$AI_HOST \
-        --select-product-id=plesk \
-        --select-release-latest \
-        --install-component panel \
-        --install-component phpgroup \
-        --install-component web-hosting \
-        --install-component mod_fcgid \
-        --install-component proftpd \
-        --install-component webservers \
-        --install-component nginx \
-        --install-component mysqlgroup \
-        --install-component php7.3 \
-        --install-component l10n \
-        --install-component heavy-metal-skin \
-        --install-component wp-toolkit \
-    && plesk bin init_conf --init \
-        -email changeme@example.com \
-        -passwd changeme1Q** \
-        -hostname-not-required \
-    && plesk bin license -i $LICENSE \
-    && plesk bin settings --set admin_info_not_required=true \
-    && plesk bin poweruser --off \
-    && plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.2-1/default-login-1.2-1.zip \
-    && plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true \
-    && echo DOCKER > /usr/local/psa/var/cloud_id \
-    && touch /root/first_run \
-    && plesk db dump > /root/psa.sql \
-    && plesk db dump apsc > /root/apsc.sql \
-    && chmod -x /usr/sbin/mysqld \
-    && apt-get clean \
-    && rm -rf /root/ai /root/parallels
+        python \
+        rsyslog \
+        systemd \
+        systemd-sysv \
+        ; \
+    rm -rf /var/lib/apt/lists/*; \
+    :
 
-COPY run.sh /run.sh
-CMD ["/run.sh"]
+# prepare fake systemctl used only during build
+ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/v1.5.4260/files/docker/systemctl.py /usr/bin/fake-systemctl
+RUN set -eux; \
+    sed -i \
+        -e '/^\s*logg.error("the ..include. syntax is deprecated. Use x.service.d. drop-in files!")$/d' \
+        -e '/Loaded:/ s/({filename}, {enabled})/({filename}; {enabled})/' \
+        /usr/bin/fake-systemctl; \
+    chmod 755 /usr/bin/fake-systemctl; \
+    :
+
+ARG LICENSE
+ARG AI_SOURCE=http://autoinstall.plesk.com
+ARG AI_ARGS=
+ARG EXT_CATALOG=https://ext.plesk.com
+
+# Do not install:
+# - additional PHP versions as we don't need them
+# - majority of extensions (except heavy-metal-skin and wp-toolkit) as we don't need them
+ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
+ENV PLESK_CONFIG__extensions__catalog__url $EXT_CATALOG
+RUN set -eux; \
+    : Use fake systemctl during build; \
+    dpkg-divert --divert /bin/systemctl.real --rename --add /bin/systemctl; \
+    ln -snf /usr/bin/fake-systemctl /bin/systemctl; \
+    : Install Plesk; \
+    wget -q -O /root/ai $AI_SOURCE/plesk-installer; \
+    bash /root/ai install plesk all \
+        --source $AI_SOURCE \
+        --ext-catalog-url $EXT_CATALOG \
+        --preset Recommended \
+        --without \
+            php7.4 \
+            config-troubleshooter advisor letsencrypt git \
+            social-login domain-connect xovi imunifyav sslit repair-kit composer monitoring \
+        $AI_ARGS \
+        ; \
+    : Configure Plesk; \
+    printf "[extensions]\ncatalog.url=%s\n" $EXT_CATALOG >> /usr/local/psa/admin/conf/panel.ini; \
+    echo DOCKER > /usr/local/psa/var/cloud_id; \
+    plesk bin license -i $LICENSE; \
+    plesk bin init_conf --init -email changeme@example.com -passwd changeme1Q** -hostname-not-required; \
+    plesk bin settings --set admin_info_not_required=true; \
+    plesk bin poweruser --off; \
+    plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.2-1/default-login-1.2-1.zip; \
+    plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true; \
+    : Stop services and clean up; \
+    service psa stopall; \
+    plesk installer stop; \
+    rm -rf /var/lib/apt/lists/*; \
+    rm -rf /root/ai /root/parallels /var/cache/parallels_installer /*.inf3 /pool /PHP* /SITEBUILDER* /run/lock/lmlib/*; \
+    : Switch to real systemctl; \
+    rm -f /bin/systemctl; \
+    dpkg-divert --rename --remove /bin/systemctl; \
+    :
+
+COPY container-systemd-autologin.conf /etc/systemd/system/console-getty.service.d/override.conf
+COPY plesk-cloning-set-password.conf /etc/systemd/system/plesk-cloning.service.d/password.conf
+
+# Running image with any other command will execute it as PID 1, rendering systemctl broken
+CMD ["/sbin/init"]
+
+STOPSIGNAL SIGRTMIN+3
 
 # Port to expose
 # 21 - ftp
@@ -76,3 +102,5 @@ CMD ["/run.sh"]
 # 8443 - plesk via https
 # 8447 - autoinstaller
 EXPOSE 21 80 443 8880 8443 8447
+
+# vim: ts=4 sts=4 sw=4 et :

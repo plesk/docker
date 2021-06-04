@@ -8,7 +8,7 @@ Ready to use images are published at [Docker Hub](https://hub.docker.com/r/plesk
 
 Create a container based on published image for evaluation purposes:
 
-    docker run -d -p 8880:8880 plesk/plesk
+    docker run -d --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8880:8880 plesk/plesk
 
 Use Docker host IP address and 8880 port for URL to open it in the browser. The following command can be used in the terminal:
 
@@ -18,11 +18,11 @@ Default login and password: admin / changeme (for 17.8), admin / changeme1Q** (f
 
 Create a container with typical port mapping:
 
-    docker run -d -p 80:80 -p 443:443 -p 8880:8880 -p 8443:8443 -p 8447:8447 plesk/plesk
+    docker run -d --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 80:80 -p 443:443 -p 8880:8880 -p 8443:8443 -p 8447:8447 plesk/plesk
 
-Automatic port mapping can be used to publish all exposed ports to random ports with the high numbers:
+Automatic port mapping can be used to publish all exposed ports to random ports with high numbers:
 
-    docker run -d -P plesk/plesk
+    docker run -d --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -P plesk/plesk
 
 # How To Build And Test
 
@@ -32,4 +32,4 @@ Here is an example on how to build the image manually:
 
 Create a container to test the image:
 
-    docker run -d -p 8880:8880 plesk/plesk
+    docker run -d --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8880:8880 plesk/plesk
