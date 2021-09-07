@@ -57,7 +57,6 @@ RUN set -eux; \
         --ext-catalog-url $EXT_CATALOG \
         --preset Recommended \
         --without \
-            php7.4 \
             config-troubleshooter advisor letsencrypt git \
             social-login domain-connect xovi imunifyav sslit repair-kit composer monitoring \
         $AI_ARGS \
