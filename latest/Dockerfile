@@ -59,6 +59,7 @@ RUN set -eux; \
         --without \
             config-troubleshooter advisor letsencrypt git \
             social-login domain-connect xovi imunifyav sslit repair-kit composer monitoring \
+            log-browser ssh-terminal \
         $AI_ARGS \
         ; \
     : Configure Plesk; \
