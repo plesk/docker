@@ -43,7 +43,7 @@ ARG EXT_CATALOG=https://ext.plesk.com
 
 # Do not install:
 # - additional PHP versions as we don't need them
-# - majority of extensions (except heavy-metal-skin and wp-toolkit) as we don't need them
+# - majority of extensions (except wp-toolkit) as we don't need them
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 ENV PLESK_CONFIG__extensions__catalog__url $EXT_CATALOG
 RUN set -eux; \
@@ -58,8 +58,8 @@ RUN set -eux; \
         --preset Recommended \
         --without \
             config-troubleshooter advisor letsencrypt git \
-            social-login domain-connect xovi imunifyav sslit repair-kit composer monitoring \
-            log-browser ssh-terminal \
+            xovi imunifyav sslit repair-kit composer monitoring \
+            log-browser ssh-terminal site-import \
         $AI_ARGS \
         ; \
     : Configure Plesk; \
