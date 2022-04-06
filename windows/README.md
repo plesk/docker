@@ -46,7 +46,7 @@ Use Docker host IP address and 8880 port for URL to open it in the browser. The 
 
 You can start the process of building Docker image with the following command:
 
-    docker build --no-cache --build-arg "LICENSE=A00A00-38PZ06-448D38-Y2BA16-D4GD66" -t plesk/plesk-windows .
+    docker build --no-cache --build-arg "LICENSE=A00K00-F86R09-JFZ220-3Q4V67-QR2P43" -t plesk/plesk-windows .
 
 # How To Use Plesk Image On AWS EC2
 
