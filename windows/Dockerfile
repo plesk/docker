@@ -28,6 +28,7 @@ RUN powershell -Command \
     --init \
     -email changeme@example.com \
     -passwd changeme1Q** \
+    -allow-weak-passwords \
     -hostname-not-required ; \
     \
     C:\Plesk\bin\license.exe -i $env:LICENSE ; \
