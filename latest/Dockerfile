@@ -66,7 +66,7 @@ RUN set -eux; \
     printf "[extensions]\ncatalog.url=%s\n" $EXT_CATALOG >> /usr/local/psa/admin/conf/panel.ini; \
     echo DOCKER > /usr/local/psa/var/cloud_id; \
     plesk bin license -i $LICENSE; \
-    plesk bin init_conf --init -email changeme@example.com -passwd changeme1Q** -hostname-not-required; \
+    plesk bin init_conf --init -email changeme@example.com -passwd "changeme1Q**" -allow-weak-passwords -hostname-not-required; \
     plesk bin settings --set admin_info_not_required=true; \
     plesk bin poweruser --off; \
     plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.2-1/default-login-1.2-1.zip; \
