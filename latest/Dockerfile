@@ -32,6 +32,7 @@ RUN set -eux; \
     sed -i \
         -e '/^\s*logg.error("the ..include. syntax is deprecated. Use x.service.d. drop-in files!")$/d' \
         -e '/Loaded:/ s/({filename}, {enabled})/({filename}; {enabled})/' \
+        -e '/^\s*def do_\(start\|stop\)_unit_from(/,/^\s*def / s/return False/return conf.name().endswith(".path")/' \
         /usr/bin/fake-systemctl; \
     chmod 755 /usr/bin/fake-systemctl; \
     :
