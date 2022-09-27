@@ -47,6 +47,7 @@ ARG EXT_CATALOG=https://ext.plesk.com
 # - majority of extensions (except wp-toolkit) as we don't need them
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 ENV PLESK_CONFIG__extensions__catalog__url $EXT_CATALOG
+ENV PLESK_CONFIG__taskManager__enabled 0
 RUN set -eux; \
     : Use fake systemctl during build; \
     dpkg-divert --divert /bin/systemctl.real --rename --add /bin/systemctl; \
@@ -64,7 +65,8 @@ RUN set -eux; \
         $AI_ARGS \
         ; \
     : Configure Plesk; \
-    printf "[extensions]\ncatalog.url=%s\n" $EXT_CATALOG >> /usr/local/psa/admin/conf/panel.ini; \
+    printf "[extensions]\ncatalog.url=${EXT_CATALOG}\n" >> /usr/local/psa/admin/conf/panel.ini; \
+    printf "[taskManager]\nenabled=off\n" >> /usr/local/psa/admin/conf/panel.ini; \
     echo DOCKER > /usr/local/psa/var/cloud_id; \
     plesk bin license -i $LICENSE; \
     plesk bin init_conf --init -email changeme@example.com -passwd "changeme1Q**" -allow-weak-passwords -hostname-not-required; \
@@ -77,6 +79,7 @@ RUN set -eux; \
     plesk installer stop; \
     rm -rf /var/lib/apt/lists/*; \
     rm -rf /root/ai /root/parallels /var/cache/parallels_installer /*.inf3 /pool /PHP* /SITEBUILDER* /run/lock/lmlib/*; \
+    rm -f /usr/local/psa/admin/conf/panel.ini; \
     : Switch to real systemctl; \
     rm -f /bin/systemctl; \
     dpkg-divert --rename --remove /bin/systemctl; \
