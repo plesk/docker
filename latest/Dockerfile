@@ -18,7 +18,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
         wget \
         tzdata \
-        python \
+        python3 \
         rsyslog \
         systemd \
         systemd-sysv \
@@ -27,7 +27,7 @@ RUN set -eux; \
     :
 
 # prepare fake systemctl used only during build
-ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/v1.5.4260/files/docker/systemctl.py /usr/bin/fake-systemctl
+ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/v1.5.4260/files/docker/systemctl3.py /usr/bin/fake-systemctl
 RUN set -eux; \
     sed -i \
         -e '/^\s*logg.error("the ..include. syntax is deprecated. Use x.service.d. drop-in files!")$/d' \
