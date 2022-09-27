@@ -53,7 +53,7 @@ RUN set -eux; \
     dpkg-divert --divert /bin/systemctl.real --rename --add /bin/systemctl; \
     ln -snf /usr/bin/fake-systemctl /bin/systemctl; \
     : Install Plesk; \
-    wget -q -O /root/ai $AI_SOURCE/plesk-installer; \
+    wget -nv -O /root/ai $AI_SOURCE/plesk-installer; \
     bash /root/ai install plesk all \
         --source $AI_SOURCE \
         --ext-catalog-url $EXT_CATALOG \
