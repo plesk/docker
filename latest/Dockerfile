@@ -72,7 +72,7 @@ RUN set -eux; \
     plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.2-1/default-login-1.2-1.zip; \
     plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true; \
     : Stop services and clean up; \
-    service psa stopall; \
+    /usr/lib/plesk-9.0/psa_service stopall; \
     plesk installer stop; \
     rm -rf /var/lib/apt/lists/*; \
     rm -rf /root/ai /root/parallels /var/cache/parallels_installer /*.inf3 /pool /PHP* /SITEBUILDER* /run/lock/lmlib/*; \
