@@ -18,7 +18,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
         wget \
         tzdata \
-        python \
+        python3 \
         rsyslog \
         systemd \
         systemd-sysv \
@@ -27,11 +27,12 @@ RUN set -eux; \
     :
 
 # prepare fake systemctl used only during build
-ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/v1.5.4260/files/docker/systemctl.py /usr/bin/fake-systemctl
+ADD https://github.com/gdraheim/docker-systemctl-replacement/raw/v1.5.4260/files/docker/systemctl3.py /usr/bin/fake-systemctl
 RUN set -eux; \
     sed -i \
         -e '/^\s*logg.error("the ..include. syntax is deprecated. Use x.service.d. drop-in files!")$/d' \
         -e '/Loaded:/ s/({filename}, {enabled})/({filename}; {enabled})/' \
+        -e '/^\s*def do_\(start\|stop\)_unit_from(/,/^\s*def / s/return False/return conf.name().endswith(".path")/' \
         /usr/bin/fake-systemctl; \
     chmod 755 /usr/bin/fake-systemctl; \
     :
@@ -46,12 +47,13 @@ ARG EXT_CATALOG=https://ext.plesk.com
 # - majority of extensions (except wp-toolkit) as we don't need them
 ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
 ENV PLESK_CONFIG__extensions__catalog__url $EXT_CATALOG
+ENV PLESK_CONFIG__taskManager__enabled 0
 RUN set -eux; \
     : Use fake systemctl during build; \
     dpkg-divert --divert /bin/systemctl.real --rename --add /bin/systemctl; \
     ln -snf /usr/bin/fake-systemctl /bin/systemctl; \
     : Install Plesk; \
-    wget -q -O /root/ai $AI_SOURCE/plesk-installer; \
+    wget -nv -O /root/ai $AI_SOURCE/plesk-installer; \
     bash /root/ai install plesk all \
         --source $AI_SOURCE \
         --ext-catalog-url $EXT_CATALOG \
@@ -63,7 +65,8 @@ RUN set -eux; \
         $AI_ARGS \
         ; \
     : Configure Plesk; \
-    printf "[extensions]\ncatalog.url=%s\n" $EXT_CATALOG >> /usr/local/psa/admin/conf/panel.ini; \
+    printf "[extensions]\ncatalog.url=${EXT_CATALOG}\n" >> /usr/local/psa/admin/conf/panel.ini; \
+    printf "[taskManager]\nenabled=off\n" >> /usr/local/psa/admin/conf/panel.ini; \
     echo DOCKER > /usr/local/psa/var/cloud_id; \
     plesk bin license -i $LICENSE; \
     plesk bin init_conf --init -email changeme@example.com -passwd "changeme1Q**" -allow-weak-passwords -hostname-not-required; \
@@ -72,10 +75,11 @@ RUN set -eux; \
     plesk bin extension --install-url https://github.com/plesk/ext-default-login/releases/download/1.2-1/default-login-1.2-1.zip; \
     plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init-conf false -skip-update true; \
     : Stop services and clean up; \
-    service psa stopall; \
+    /usr/lib/plesk-9.0/psa_service stopall; \
     plesk installer stop; \
     rm -rf /var/lib/apt/lists/*; \
     rm -rf /root/ai /root/parallels /var/cache/parallels_installer /*.inf3 /pool /PHP* /SITEBUILDER* /run/lock/lmlib/*; \
+    rm -f /usr/local/psa/admin/conf/panel.ini; \
     : Switch to real systemctl; \
     rm -f /bin/systemctl; \
     dpkg-divert --rename --remove /bin/systemctl; \
