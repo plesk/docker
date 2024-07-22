@@ -8,7 +8,7 @@ FROM $OS
 
 LABEL maintainer="plesk-dev-leads@plesk.com"
 
-ENV container docker
+ENV container=docker
 
 # allow services to start
 RUN sed -i -e 's/exit.*/exit 0/g' /usr/sbin/policy-rc.d
@@ -46,9 +46,9 @@ ARG EXT_CATALOG=https://ext.plesk.com
 # Do not install:
 # - additional PHP versions as we don't need them
 # - majority of extensions (except wp-toolkit) as we don't need them
-ENV PLESK_DISABLE_HOSTNAME_CHECKING 1
-ENV PLESK_CONFIG__extensions__catalog__url $EXT_CATALOG
-ENV PLESK_CONFIG__taskManager__enabled 0
+ENV PLESK_DISABLE_HOSTNAME_CHECKING=1
+ENV PLESK_CONFIG__extensions__catalog__url=$EXT_CATALOG
+ENV PLESK_CONFIG__taskManager__enabled=0
 RUN set -eux; \
     : Use fake systemctl during build; \
     dpkg-divert --divert /bin/systemctl.real --rename --add /bin/systemctl; \
