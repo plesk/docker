@@ -2,7 +2,7 @@
 # Run in background: 'docker run -d --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8443:8443 IMAGE'
 # Run in foreground: 'docker run -ti --rm --tmpfs /tmp --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro -p 8443:8443 IMAGE', stop with 'halt' instead of Ctrl+D
 
-ARG OS=ubuntu:20.04
+ARG OS=ubuntu:22.04
 FROM $OS
 
 LABEL maintainer="plesk-dev-leads@plesk.com"
