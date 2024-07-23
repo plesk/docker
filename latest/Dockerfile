@@ -37,9 +37,9 @@ RUN set -eux; \
     chmod 755 /usr/bin/fake-systemctl; \
     :
 
-ARG LICENSE
+ARG LICENSE=""
 ARG AI_SOURCE=http://autoinstall.plesk.com
-ARG AI_ARGS=
+ARG AI_ARGS=""
 ARG EXT_CATALOG=https://ext.plesk.com
 
 # Do not install:
