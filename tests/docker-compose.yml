@@ -1,9 +1,10 @@
 # Copyright 1999-2024. WebPros International GmbH.
 services:
   tests:
-    build: ../latest/
-    environment:
-      LICENSE: A00Y00-1KWH10-REFG92-T9JF97-TBXC06
+    build:
+      context: ../latest/
+      args:
+        LICENSE: A00Y00-1KWH10-REFG92-T9JF97-TBXC06
     logging:
       driver: none
     ports:
