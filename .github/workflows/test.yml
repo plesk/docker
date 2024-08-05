@@ -1,0 +1,19 @@
+# Copyright 1999-2024. WebPros International GmbH.
+name: test
+
+on:
+  push:
+    paths:
+      - 'latest/**'
+      - 'tests/**'
+  pull_request:
+    paths:
+      - 'latest/**'
+      - 'tests/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose -f ./tests/docker-compose.yml run tests

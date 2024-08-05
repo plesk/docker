@@ -1,0 +1,17 @@
+# Copyright 1999-2024. WebPros International GmbH.
+services:
+  tests:
+    build: ../latest/
+    logging:
+      driver: none
+    ports:
+      ["8443:8443"]
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - .:/opt/tests/
+    cgroup: host
+    command: /opt/tests/wait-for-plesk.sh

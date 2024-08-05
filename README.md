@@ -1,5 +1,7 @@
 # Dockerfiles for Plesk
 
+[![Test Status](https://github.com/plesk/docker/actions/workflows/test.yml/badge.svg)](https://github.com/plesk/docker/actions/workflows/test.yml)
+
 Dockerfiles for building Plesk images.
 
 # Ready to Use Images
