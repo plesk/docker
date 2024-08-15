@@ -17,14 +17,11 @@ services:
       - /sys/fs/cgroup:/sys/fs/cgroup
     cgroup: host
   tests:
-    image: debian:bookworm
+    build: .
     depends_on:
       - plesk
     links:
       - plesk
     volumes:
       - .:/opt/tests/
-    command: >
-      bash -c "apt-get update
-      && apt-get install -y curl
-      && /opt/tests/wait-for-plesk.sh"
+    command: /opt/tests/wait-for-plesk.sh
