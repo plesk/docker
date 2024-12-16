@@ -4,7 +4,7 @@ services:
     build:
       context: ../latest/
       args:
-        LICENSE: A00Y00-1KWH10-REFG92-T9JF97-TBXC06
+        LICENSE: A00C00-KF1111-7W5V74-YCJQ36-G8EF47
     logging:
       driver: none
     ports:
