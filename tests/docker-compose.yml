@@ -4,7 +4,7 @@ services:
     build:
       context: ../latest/
       args:
-        LICENSE: A00C00-KF1111-7W5V74-YCJQ36-G8EF47
+        LICENSE: A00700-TEFT12-W88534-JGH917-MBFE93
     logging:
       driver: none
     ports:

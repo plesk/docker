@@ -48,7 +48,7 @@ Create a container with typical port mapping:
 
 Here is an example on how to build the image manually:
 
-    cd latest ; docker build --no-cache --build-arg "LICENSE=A00C00-KF1111-7W5V74-YCJQ36-G8EF47" -t plesk/plesk .
+    cd latest ; docker build --no-cache --build-arg "LICENSE=A00700-TEFT12-W88534-JGH917-MBFE93" -t plesk/plesk .
 
 Create a container to test the image:
 
